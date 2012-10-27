@@ -1,3 +1,16 @@
+.project
+.metadata
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
 *.class
 *.log
 
@@ -11,3 +24,5 @@ project/plugins/project/
 
 # Scala-IDE specific
 .scala_dependencies
+.cache
+.target
