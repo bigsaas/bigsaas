@@ -1,8 +1,14 @@
-// The Typesafe repository 
-resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-// Typesafe snapshots
-resolvers += "Typesafe Snapshots" at "http://repo.typesafe.com/typesafe/snapshots/"
+import sbt._
+import Defaults._
 
-// Use the Play sbt plugin for Play projects
-addSbtPlugin("play" % "sbt-plugin" % "2.1-10112012")
+resolvers += "TypeSafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
+
+libraryDependencies ++= Seq(
+  sbtPluginExtra(
+    m = "play" % "sbt-plugin" % "2.1-RC1",
+    sbtV = "0.12",
+    scalaV = "2.9.2"))
+  
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.1.0")
+

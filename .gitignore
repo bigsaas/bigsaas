@@ -17,6 +17,7 @@ local.properties
 # sbt specific
 dist/*
 target/
+data/
 lib_managed/
 src_managed/
 project/boot/
