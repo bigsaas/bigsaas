@@ -3,11 +3,24 @@ package org.bigsaas.domain.catalog
 
 import org.bigsaas.core.model.Id
 import org.bigsaas.core.model.HasId
+import org.bigsaas.core.model.json._
 import java.util.Locale
 import org.bigsaas.domain.party.Party
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.format.DateTimeFormat
+import play.api.libs.json.Json
+import play.api.libs.json._
+import play.api.libs.json.util._
+
+package object json {
+  
+  
+  implicit val propertyScopeReads = Reads[PropertyScope.Value] { jsValue => JsSuccess(PropertyScope.withName(jsValue.toString)) }
+  implicit val propertyTypeReads = Reads[PropertyType.Value] { jsValue => JsSuccess(PropertyType.withName(jsValue.toString)) }
+  
+  implicit val propertyReads = Json.reads[Property]
+}
 
 case class Property(
   id : Id[Property] = Id.generate,

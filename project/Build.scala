@@ -21,7 +21,7 @@ object BigSaasBuild extends Build {
         sbtPlugin := false,
         organization := "org.bigsaas",
         version := "1.0.0-SNAPSHOT",
-        scalaVersion := "2.10.0-RC2",
+        scalaVersion := "2.10.0-RC3",
         publishMavenStyle := false,
         scalacOptions += "-deprecation",
         scalacOptions += "-unchecked",
