@@ -1,13 +1,12 @@
-package org.bigsaas.domain.assetmanagement
+package org.bigsaas.domain.assets.model
+
+import java.util.Date
 
 import org.bigsaas.core.model.HasId
 import org.bigsaas.core.model.Id
-import java.util.Locale
-import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
-import org.bigsaas.domain.party.Party
-import org.bigsaas.domain.catalog.CatalogItem
-import org.bigsaas.domain.catalog.PropertyValue
+import org.bigsaas.domain.catalog.model.CatalogItem
+import org.bigsaas.domain.catalog.model.PropertyValue
+import org.bigsaas.domain.party.model.Party
 
 case class Asset(
   id : Id[Asset] = Id.generate,
@@ -24,7 +23,7 @@ case class SpecificLocation(
 
 case class Reading(
   asset : Asset,
-  time : DateTime,
+  time : Date,
   rawData : Array[Byte],
   values : Seq[PropertyValue]) 
   

@@ -1,26 +1,12 @@
-package org.bigsaas.domain.catalog
+package org.bigsaas.domain.catalog.model
 
-
-import org.bigsaas.core.model.Id
-import org.bigsaas.core.model.HasId
-import org.bigsaas.core.model.json._
 import java.util.Locale
-import org.bigsaas.domain.party.Party
-import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
-import org.joda.time.format.DateTimeFormat
-import play.api.libs.json.Json
-import play.api.libs.json._
-import play.api.libs.json.util._
-
-package object json {
-  
-  
-  implicit val propertyScopeReads = Reads[PropertyScope.Value] { jsValue => JsSuccess(PropertyScope.withName(jsValue.toString)) }
-  implicit val propertyTypeReads = Reads[PropertyType.Value] { jsValue => JsSuccess(PropertyType.withName(jsValue.toString)) }
-  
-  implicit val propertyReads = Json.reads[Property]
-}
+import scala.concurrent.duration.Deadline
+import java.text.SimpleDateFormat
+import java.util.TimeZone
+import org.bigsaas.core.model.HasId
+import org.bigsaas.core.model.Id
+import org.bigsaas.domain.party.model.Party
 
 case class Property(
   id : Id[Property] = Id.generate,
@@ -58,11 +44,15 @@ case class CatalogItem (
   parents : Seq[Id[CatalogItem]] = Seq.empty,
   properties : Seq[Property] = Seq.empty,
   values : Seq[PropertyValue] = Seq.empty,
-  when : DateTime = new DateTime(DateTimeZone.UTC)
+  when : Deadline = Deadline.now
 ) extends HasId[CatalogItem]
 
 object CatalogItem {
-  val dateTimeFormat = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm");
+  val dateTimeFormat = {
+    val df = new SimpleDateFormat("dd-MM-yyyy HH:mm")
+    df.setTimeZone(TimeZone.getTimeZone("UTC"))
+    df
+  }
   def parseValue(value : String, `type` : PropertyType.Value) : Option[Any] = {
     `type` match {
       case PropertyType.String => Some(value)
@@ -77,7 +67,7 @@ object CatalogItem {
         case _ : java.lang.NumberFormatException => None
       }
       case PropertyType.DateTime => try {
-        Some(dateTimeFormat.parseDateTime(value))
+        Some(dateTimeFormat.parse(value))
       } catch {
         case _ : Throwable => None
       }
@@ -87,8 +77,8 @@ object CatalogItem {
   def toString(value : Any, `type` : PropertyType.Value) : String = 
     `type` match {
     case PropertyType.DateTime => 
-      if (value.isInstanceOf[DateTime]) {
-        dateTimeFormat.print(value.asInstanceOf[DateTime])
+      if (value.isInstanceOf[Deadline]) {
+        dateTimeFormat.format(value.asInstanceOf[Deadline].time.length)
       } else {
         value.toString
       }

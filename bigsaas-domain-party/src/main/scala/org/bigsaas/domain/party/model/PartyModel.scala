@@ -1,9 +1,8 @@
-package org.bigsaas.domain.party
+package org.bigsaas.domain.party.model
 
-import org.bigsaas.core.model.Id
-import org.bigsaas.domain.catalog.CatalogItem
-import org.bigsaas.util.Implicits._
 import scala.util.Random
+import org.bigsaas.core.model.Id
+import org.bigsaas.util.implicits._
 
 case class Party (
   id : Id[Party] = Id.generate,
@@ -24,7 +23,7 @@ case class Party (
    * Party can see all properties of parent models.
    * Party can only change models it owns (AssetModel.owner)
    */
-  visibleAssetModels : Set[Id[CatalogItem]] = Set.empty,
+//  visibleAssetModels : Set[Id[CatalogItem]] = Set.empty,
   
   relations : Set[Party] = Set.empty,
   
@@ -45,8 +44,8 @@ case class OwnedParty (
 case class Relation (
   relatedParty : Id[Party],
   relatedPartyAlias : String,
-  relationType : String, 
-  allowedAssetModels : Seq[Id[CatalogItem]]
+  relationType : String 
+//  allowedAssetModels : Seq[Id[CatalogItem]]
 )
 
 case class UserRole (
