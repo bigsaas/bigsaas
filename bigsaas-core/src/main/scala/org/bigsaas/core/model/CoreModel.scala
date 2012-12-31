@@ -14,7 +14,7 @@ object Id {
 }
 
 case class Id[A](id: String) {
-  override def toString = id.toString
+  override def toString = id
 }
 
 class ByLocale[T](val map : SortedMap[Locale, T]) {

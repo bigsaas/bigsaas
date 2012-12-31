@@ -5,6 +5,9 @@ import spray.json.JsValue
 import spray.json.JsString
 import spray.json.deserializationError
 
+/**
+ * Base class for Json formats for types that convert to and from a string representation in Json.
+ */
 class StringJsonFormat[A](type_ : String, f: String => A) extends JsonFormat[A] {
   def write(value: A) = JsString(value.toString)
   def read(value: JsValue): A = value match {
