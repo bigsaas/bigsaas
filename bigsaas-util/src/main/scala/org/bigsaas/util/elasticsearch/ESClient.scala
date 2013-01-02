@@ -13,11 +13,11 @@ import spray.json.pimpString
 
 class ESClient(val client: Client) {
 
-  def get[A: JsonFormat](index: ESIndex, type_ : Option[ESType] = None, id: String): Future[A] = {
+  def get[A: JsonFormat](index: ESIndex, type_ : ESTypeOrAll, id: String): Future[A] = {
     val promise = Promise[A]()
     val t = type_ match {
-      case Some(t) => t.type_
-      case None => "_all"
+      case ESTypeAll => "_all"
+      case ESType(t) => t
     }
     client.prepareGet(index.index, t, id)
       .execute

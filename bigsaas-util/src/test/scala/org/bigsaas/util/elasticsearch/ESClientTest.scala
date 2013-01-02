@@ -23,7 +23,7 @@ class ESClientTest extends FlatSpec with ESTest {
 
   "The index" should "be initially empty" in {
     intercept[Exception] {
-      val p2: Person = wait(es.get[Person](index, None, person.id))
+      val p2: Person = wait(es.get[Person](index, ESTypeAll, person.id))
     }
   }
 
@@ -33,7 +33,7 @@ class ESClientTest extends FlatSpec with ESTest {
   }
 
   "The same typed object" should " be retrieved from ES." in {
-    val retrievedPerson: Person = wait(es.get[Person](index, None, person.id))
+    val retrievedPerson: Person = wait(es.get[Person](index, ESTypeAll, person.id))
     assert(person == retrievedPerson)
   }
 }
