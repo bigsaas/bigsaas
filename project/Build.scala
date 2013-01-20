@@ -43,7 +43,7 @@ object BigSaasBuild extends Build {
     libraryDependencies ++= Seq(es, sprayJson)))
     		
   lazy val bigsaasCore = Project(id = "bigsaas-core", base = file("bigsaas-core"), settings = defaultSettings ++ Seq(
-    libraryDependencies ++= Seq(es, sprayCan, sprayRouting, sprayJson, akkaActor, sprayTest, config, grizzled, guava))).
+    libraryDependencies ++= Seq(es, sprayCan, sprayRouting, sprayJson, akkaActor, sprayTest, config, grizzled, logback, guava))).
     dependsOn(bigsaasUtil)
 
   lazy val bigsaasParty = Project(id = "bigsaas-domain-party", base = file("bigsaas-domain-party"), settings = defaultSettings ++ Seq(

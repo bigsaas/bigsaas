@@ -13,7 +13,11 @@ import spray.routing.HttpServiceActor
  * Actor for Ui project.
  */
 class UiActor extends ApiActor with Ui {
-  override def receive = runRoute(api ~ ui)
+  override def receive = runRoute{
+    logRequestResponse(routeLog _) {
+      api ~ ui
+    }
+  }
 }
 
 /**
@@ -23,5 +27,5 @@ object UiServer extends App with SprayCanHttpServerApp {
 
   val service = system.actorOf(Props[UiActor], "2cents")
 
-  newHttpServer(service) ! Bind(interface = "0.0.0.0", port = 9001)
+  newHttpServer(service) ! Bind(interface = "0.0.0.0", port = 9002)
 }

@@ -17,23 +17,21 @@ import spray.routing.directives.PathMatcher
 trait Ui extends HttpService {
 
   val ui = {
-  path("css" / Rest) { path =>
-    getFromResource("public/css/" + path)
-  } ~
-  path("js" / Rest) { path =>
-    getFromResource("public/js/" + path)
-  } ~
-  path("lib" / Rest) { path =>
-    getFromResource("public/lib/" + path)
-  } ~
-  path("img" / Rest) { path =>
-    getFromResource("public/img/" + path)
-  } ~ 
-  path("partials" / Rest) { path =>
-    getFromResource("public/partials/" + path)
-  } ~
-  path(PathElement) { pathElement =>
+    path("css" / Rest) { path =>
+      getFromResource("public/css/" + path)
+    } ~
+    path("js" / Rest) { path =>
+      getFromResource("public/js/" + path)
+    } ~
+    path("lib" / Rest) { path =>
+      getFromResource("public/lib/" + path)
+    } ~
+    path("img" / Rest) { path =>
+      getFromResource("public/img/" + path)
+    } ~ 
+    path("partials" / Rest) { path =>
+      getFromResource("public/partials/" + path)
+    } ~
     getFromResource("public/index.html")
-  }
   }
 }

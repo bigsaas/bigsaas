@@ -6,6 +6,6 @@ import org.bigsaas.core.model.Id
 object DocumentManager {
 
   def findDocuments : Seq[Document] = {
-    Seq(Document(Id.generate))
+    Seq(Document(Id.generate, Seq()))
   }
 }
