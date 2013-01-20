@@ -1,0 +1,1 @@
+var twocents = angular.module('twocents', ['ngResource']);

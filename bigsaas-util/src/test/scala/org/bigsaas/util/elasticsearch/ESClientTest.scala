@@ -28,7 +28,7 @@ class ESClientTest extends FlatSpec with ESTest {
   }
 
   "A typed object" should "be stored as Json" in {
-    val id: String = wait(es.store(index, indexType, person.id, person))
+    val id: String = wait(es.index(index, indexType, person.id, person))
     assert(id == person.id)
   }
 

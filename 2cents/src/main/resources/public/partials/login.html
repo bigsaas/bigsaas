@@ -1,0 +1,41 @@
+<div ng-include src="'partials/header.html'"></div>
+<div class="login-page">
+    <form class="form-login" name="loginForm" novalidate ng-submit="login()">
+        <fieldset>
+            <h2>Login</h2>
+            <input type="text" required class="input-block-level" placeholder="Username" ng-model="username" name="username" tabindex="1">
+            <p class="text-error" ng-show="loginForm.username.$dirty && loginForm.username.$invalid">
+                <span ng-show="loginForm.username.$error.required">Username required.</span>
+            </p>
+            <input type="password" required class="input-block-level" placeholder="Password" ng-model="password" name="password" tabindex="2">
+            <p class="text-error" ng-show="loginForm.password.$dirty && loginForm.password.$invalid">
+                <span ng-show="loginForm.password.$error.required">Password required.</span>
+            </p>
+            <p class="text-error" ng-show="loginForm.username.$dirty && loginForm.username.$valid && loginForm.password.$dirty && loginForm.password.$valid && loginForm.$invalid">
+                <span>Invalid username or password</span>
+            </p>
+            <p><a href="#forgotPassword" data-toggle="modal" class="btn btn-link">Forgot password?</a></p>
+            <p><button class="btn btn-primary btn-large" ng-disabled="loginForm.username.$invalid || loginForm.password.$invalid" type="submit" tabindex="3">Login</button></p>
+        </fieldset>
+    </form>
+
+    <div id="forgotPassword" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3 id="myModalLabel">Password recovery</h3>
+        </div>
+        <form class="recover-password" name="recoverPasswordForm" novalidate ng-submit="recoverPassword()">
+            <div class="modal-body">
+                <input type="email" required class="input-block-level" placeholder="E-mail" ng-model="email" name="email">
+                <div ng-show="recoverPasswordForm.email.$dirty && recoverPasswordForm.email.$invalid">
+                    <span ng-show="recoverPasswordForm.email.$error.required">E-mail required.</span>
+                    <span ng-show="recoverPasswordForm.email.$error.email">E-mail invalid.</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!--<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>-->
+                <button type="submit" class="btn btn-primary" ng-disabled="recoverPassword.$invalid">Recover</button>
+            </div>
+        </form>
+    </div>
+</div>

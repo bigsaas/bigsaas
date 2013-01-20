@@ -65,7 +65,7 @@ class ESClient(val client: Client) {
       promise.future
   }
 
-  def store[A: JsonFormat](index: ESIndex, typ : ESType, id: String, obj: A): Future[String] = {
+  def index[A: JsonFormat](index: ESIndex, typ : ESType, id: String, obj: A): Future[String] = {
     obj.toJson match {
       case obj: JsObject =>
         val promise = Promise[String]()

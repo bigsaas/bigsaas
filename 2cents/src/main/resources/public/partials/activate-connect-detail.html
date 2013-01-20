@@ -1,0 +1,82 @@
+<div ng-include src="'partials/header.html'"></div>
+<div class="container-fluid asset-detail-page">
+    <ul class="nav nav-tabs asset-nav">
+        <li><a href="/asset-list"><span class="number">1</span> Register &lt;Nr_Of_Assets&gt;</a></li>
+        <li><a href="/connect-list"><span class="number">2</span> Connect &lt;Nr_Of_Assets&gt;</a></li>
+        <li class="active"><a href="/activate-list"><span class="number">3</span> Activate &lt;Nr_Of_Assets&gt;</a></li>
+    </ul>
+    <div class="row-fluid">
+        <div class="pull-right">
+            <a href="#" class="btn btn-danger">Activate</a>
+            <a href="#" class="btn btn-primary"><i class="icon-time icon-white"></i></a>
+            <a href="#" class="btn btn-primary"><i class="icon-edit icon-white"></i></a>
+        </div>
+        <p class="span7 header-text">&lt;LocationName&gt; (&lt;PartyName&gt;) - &lt;Building&gt;</p>
+    </div>
+    <div class="asset-detail-container">
+        <div class="row-fluid">
+            <div class="input-prepend span6">
+                <span class="add-on span2">Brand</span>
+                <input class="span10" type="text">
+            </div>
+            <div class="input-prepend span6">
+                <span class="add-on span2">Model</span>
+                <input class="span10" type="text">
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="input-prepend span12">
+                <span class="add-on span2">OEM Serial#</span>
+                <input class="span10" type="text">
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="input-prepend span12">
+                <span class="add-on span2">Location</span>
+                <input class="span10" type="text">
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span4">
+                <div class="input-prepend span12">
+                    <span class="add-on">Building</span>
+                    <input class="span9" type="text">
+                </div>
+            </div>
+            <div class="span4">
+                <div class="input-prepend span12">
+                    <span class="add-on">Floor</span>
+                    <input class="span9" type="text">
+                </div>
+            </div>
+            <div class="span4">
+                <div class="input-prepend span12">
+                    <span class="add-on">Room</span>
+                    <input class="span9" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="input-prepend span6">
+                <span class="add-on span2">Connector</span>
+                <select class="span10">
+                    <option>Connector 1</option>
+                    <option>Connector 2</option>
+                    <option>Connector 3</option>
+                    <option>Connector 4</option>
+                    <option>Connector 5</option>
+                </select>
+            </div>
+            <div class="input-prepend span6">
+                <span class="add-on span2">HW Address</span>
+                <select class="span10">
+                    <option>Address 1</option>
+                    <option>Address 2</option>
+                    <option>Address 3</option>
+                    <option>Address 4</option>
+                    <option>Address 5</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

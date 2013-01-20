@@ -1,0 +1,123 @@
+<div ng-include src="'partials/header.html'"></div>
+<div class="container-fluid app-page">
+    <div class="asset-detail-container">
+        <form class="form-horizontal">
+            <div class="control-group row-fluid">
+                <div class="span6">
+                    <label class="control-label span2">Brand</label>
+                    <div class="controls span10">
+                        <select class="span12" ng-model="asset.assetModelId" ng-options="model.id as model.make for model in models">
+                        </select>
+                    </div>
+                </div>
+                <div class="span6">
+                    <label class="control-label span2">Model</label>
+                    <div class="controls span10">
+                        <select class="span12" ng-model="asset.assetModelId" ng-options="model.id as model.model for model in models">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group row-fluid">
+                <div class="span12">
+                    <label class="control-label span2">OEM S/N</label>
+                    <div class="controls span10">
+                        <input class="span12" type="text" ng-model="asset.oemSerialNumber">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group row-fluid">
+                <div class="span8">
+                    <label class="control-label span2">Location</label>
+                    <div class="controls span10">
+                        <select class="span12" ng-model="asset.locationId" ng-options="location.id as location.description for location in locations">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group row-fluid">
+                <div class="span4">
+                    <label class="control-label span2">Building</label>
+                    <div class="controls span10">
+                        <input class="span12" type="text" ng-model="asset.building">
+                    </div>
+                </div>
+                <div class="span4">
+                    <label class="control-label span2">Floor</label>
+                    <div class="controls span10">
+                        <input class="span12" type="text" ng-model="asset.floor">
+                    </div>
+                </div>
+                <div class="span4">
+                    <label class="control-label span2">Room</label>
+                    <div class="controls span10">
+                        <input class="span12" type="text" ng-model="asset.room">
+                    </div>
+                </div>
+            </div>
+            <div class="control-group row-fluid">
+                <label class="control-label span2">Other</label>
+                <div class="controls span10">
+                    <input class="span12" type="text" ng-model="asset.other">
+                </div>
+            </div>
+            <div class="control-group row-fluid">
+                <div class="span6">
+                    <label class="control-label span2">Connector</label>
+                    <div class="controls span10">
+                        <select class="span12">
+                            <option>Connector 1</option>
+                            <option>Connector 2</option>
+                            <option>Connector 3</option>
+                            <option>Connector 4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="span6">
+                    <label class="control-label span2">HW Address</label>
+                    <div class="controls span10">
+                        <select class="span12">
+                            <option>Address 1</option>
+                            <option>Address 2</option>
+                            <option>Address 3</option>
+                            <option>Address 4</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <table class="table">
+            <tr>
+                <th>Ping</th>
+                <th>RF Unit Status</th>
+                <th>Initialize</th>
+                <th>Reboot</th>
+                <th>OTAP</th>
+                <th>Fetch gateway log</th>
+                <th>Fetch firmware version</th>
+            </tr>
+            <tr>
+                <td>182ms</td>
+                <td>ONLINE</td>
+                <td>1</td>
+                <td>0</td>
+                <td>OTAP</td>
+                <td>link</td>
+                <td>link</td>
+            </tr>
+        </table>
+
+        <table class="table">
+            <tr>
+                <th>IP Address</th>
+                <th>Link</th>
+                <th>Date last seen</th>
+            </tr>
+            <tr>
+                <td>10.10.189.1</td>
+                <td></td>
+                <td>31.12.2012 19:00:00</td>
+            </tr>
+        </table>
+    </div>
+</div>

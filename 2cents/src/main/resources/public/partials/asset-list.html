@@ -1,0 +1,20 @@
+<div ng-include src="'partials/header.html'"></div>
+<div class="container-fluid app-page">
+    <div class="asset-list-container">
+        <div class="row-fluid">
+            <div class="span6" ng-repeat="asset in assets">
+                <div class="asset" data-id="{{asset.id}}" ng-click="goToDetail(asset.id)">
+                    <div class="pull-right">
+                        <img src="img/asset-icon-1.png"><br>
+                        <img src="img/asset-icon-2.png"><br>
+                        <img src="img/asset-icon-3.png">
+                    </div>
+                    <div>
+                        <p class="first">{{asset.assetModel.make}} {{asset.assetModel.model}} - {{asset.oemSerialNumber}}</p>
+                        <p>{{asset.location.descripton}} {{asset.specificLocation.building}} {{asset.specificLocation.floor}} {{asset.specificLocation.room}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

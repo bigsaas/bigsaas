@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <div class="row-fluid nav-container">
+        <ul class="nav nav-tabs asset-nav">
+            <li ng-class="{active: navClass == 'register'}"><a href="/asset-list"><span class="number">1</span> Register &lt;Nr_Of_Assets&gt;</a></li>
+            <li ng-class="{active: navClass == 'connect'}"><a href="/connect-list"><span class="number">2</span> Activate &lt;Nr_Of_Assets&gt;</a></li>
+            <li ng-class="{active: navClass == 'activate'}"><a href="/activate-list"><span class="number">3</span> Connect &lt;Nr_Of_Assets&gt;</a></li>
+        </ul>
+    </div>
+    <div ng-include src="controlsTemplate"></div>
+</div>
