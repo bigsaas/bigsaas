@@ -1,6 +1,4 @@
-package org.bigsaas.util.elasticsearch
-
-case class ESIndex(index: String) extends AnyVal
+package org.bigsaas.client.elasticsearch
 
 sealed trait ESTypeOrAll 
 

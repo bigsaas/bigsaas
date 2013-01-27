@@ -3,7 +3,6 @@ import Keys._
 import PlayProject._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys
 import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseCreateSrc
-
  
 object BigSaasBuild extends Build {
  
@@ -23,6 +22,7 @@ object BigSaasBuild extends Build {
   val sprayJson = "io.spray" %% "spray-json" % "1.2.3"
   val sprayTest = "io.spray" % "spray-testkit" % "1.1-M7" % "test"
   val akkaActor = "com.typesafe.akka" % "akka-actor_2.10.0-RC1" % "2.1.0-RC1" 
+  val curator = "com.netflix.curator" % "curator-framework" % "1.2.6"
 
   def defaultSettings =
     Project.defaultSettings ++
@@ -35,7 +35,8 @@ object BigSaasBuild extends Build {
         scalacOptions += "-deprecation",
         scalacOptions += "-unchecked",
         libraryDependencies += scalatest,
-        EclipseKeys.skipParents in ThisBuild := false,
+        resolvers += "spray repo" at "http://repo.spray.io",
+        EclipseKeys.skipParents in ThisBuild := true,
         EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
         EclipseKeys.withSource := true)
 
@@ -43,8 +44,16 @@ object BigSaasBuild extends Build {
     libraryDependencies ++= Seq(es, sprayJson)))
     		
   lazy val bigsaasCore = Project(id = "bigsaas-core", base = file("bigsaas-core"), settings = defaultSettings ++ Seq(
-    libraryDependencies ++= Seq(es, sprayCan, sprayRouting, sprayJson, akkaActor, sprayTest, config, grizzled, logback, guava))).
+    libraryDependencies ++= Seq(es, sprayCan, sprayRouting, sprayJson, akkaActor, sprayTest, config, grizzled, guava, curator))).
     dependsOn(bigsaasUtil)
+
+  lazy val bigsaasClient = Project(id = "bigsaas-client", base = file("bigsaas-client"), settings = defaultSettings ++ Seq(
+    libraryDependencies ++= Seq())).
+    dependsOn(bigsaasCore)
+
+  lazy val bigsaasNode = Project(id = "bigsaas-node", base = file("bigsaas-node"), settings = defaultSettings ++ Seq(
+    libraryDependencies ++= Seq())).
+    dependsOn(bigsaasCore)
 
   lazy val bigsaasParty = Project(id = "bigsaas-domain-party", base = file("bigsaas-domain-party"), settings = defaultSettings ++ Seq(
     libraryDependencies ++= Seq())).
@@ -63,6 +72,6 @@ object BigSaasBuild extends Build {
 	dependsOn(bigsaasCore)
     		
   lazy val bigsaas = Project(id = "bigsaas", base = file("."), settings = defaultSettings). 
-  	aggregate(bigsaasUtil, bigsaasCore, bigsaasCatalog, bigsaasAssets, bigsaasParty, twocents)
+  	aggregate(bigsaasUtil, bigsaasCore, bigsaasClient, bigsaasNode, bigsaasCatalog, bigsaasAssets, bigsaasParty, twocents)
  
 }

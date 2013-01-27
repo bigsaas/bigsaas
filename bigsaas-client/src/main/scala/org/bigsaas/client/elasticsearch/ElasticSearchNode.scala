@@ -1,4 +1,4 @@
-package org.bigsaas.elasticsearch.server
+package org.bigsaas.client.elasticsearch
 
 import org.elasticsearch.node.NodeBuilder._
 //import org.bigsaas.elasticsearch.client.ElasticSearchClient
