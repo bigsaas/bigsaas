@@ -21,7 +21,7 @@ import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.client.Client
 
-class ESClient(val javaClient: Client) {
+class ESClient(val javaClient: Client) extends AnyVal {
 
   def apply[Request, Response](request: Request)(implicit action: ActionMagnet[Request, Response]): Future[Response] =
     action.execute(javaClient, request)

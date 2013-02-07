@@ -12,6 +12,7 @@ import org.bigsaas.core.json.implicits._
 import spray.json.JsObject
 import org.bigsaas.util.elasticsearch.ESTest
 import org.bigsaas.core.model.Id
+import scala.concurrent.ExecutionContext.Implicits.global
 
 case class Person(id: Id[Person], firstName: Option[String] = None, lastName: Option[String] = None)
 

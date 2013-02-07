@@ -1,22 +1,19 @@
 package org.bigsaas.core.json
 
 import java.util.Locale
+
+import org.bigsaas.core.model.ByLocale
+import org.bigsaas.core.model.ByLocale.toMap
+import org.bigsaas.core.model.Id
+import org.bigsaas.util.json.StringJsonFormat
+
+import spray.json.DefaultJsonProtocol
 import spray.json.JsArray
-import spray.json.JsField
 import spray.json.JsObject
 import spray.json.JsString
 import spray.json.JsValue
 import spray.json.JsonFormat
-import spray.json.DefaultJsonProtocol
 import spray.json.pimpAny
-import org.bigsaas.util.json.StringJsonFormat
-import org.bigsaas.core.model.Id
-import org.bigsaas.core.model.ByLocale
-import org.bigsaas.core.model.ByLocale.toMap
-import spray.json.JsNumber
-import spray.json.JsBoolean
-import java.util.Collection
-import spray.json.JsNull
 
 trait CoreJsonProtocol extends DefaultJsonProtocol {
   

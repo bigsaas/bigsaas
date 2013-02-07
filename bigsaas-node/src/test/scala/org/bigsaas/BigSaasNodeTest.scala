@@ -1,7 +1,7 @@
 package org.bigsaas
 
 import org.scalatest.FlatSpec
-import org.bigsaas.core.node.BigSaasNode
+import org.bigsaas.node.BigSaasNode
 import org.bigsaas.core.Tenant
 import org.bigsaas.core.TenantIsolation
 import org.bigsaas.util.elasticsearch.ESTest

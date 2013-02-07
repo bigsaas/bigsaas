@@ -1,4 +1,4 @@
-package org.bigsaas.core.node
+package org.bigsaas.node
 
 import scala.concurrent.Await
 import scala.concurrent.Future
