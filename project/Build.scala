@@ -24,7 +24,7 @@ object BigSaasBuild extends Build {
   val akkaActor = "com.typesafe.akka" %% "akka-actor" % "2.1.0" 
   val akkaRemote = "com.typesafe.akka" %% "akka-remote" % "2.1.0" 
   val curator = "com.netflix.curator" % "curator-framework" % "1.2.6"
-  val esclient = "org.scalastuff" %% "esclient" % "0.20.2-SNAPSHOT"
+  val esclient = "org.scalastuff" %% "esclient" % "0.20.3-SNAPSHOT"
 
   def defaultSettings =
     Project.defaultSettings ++
@@ -38,6 +38,7 @@ object BigSaasBuild extends Build {
         scalacOptions += "-unchecked",
         libraryDependencies += scalatest,
         resolvers += "spray repo" at "http://repo.spray.io",
+	resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
         EclipseKeys.skipParents in ThisBuild := true,
         EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
         EclipseKeys.withSource := true)
@@ -46,7 +47,7 @@ object BigSaasBuild extends Build {
     libraryDependencies ++= Seq(es, sprayJson)))
     		
   lazy val bigsaasCore = Project(id = "bigsaas-core", base = file("bigsaas-core"), settings = defaultSettings ++ Seq(
-    libraryDependencies ++= Seq(es, sprayCan, sprayRouting, sprayJson, akkaActor, akkaRemote, sprayTest, config, grizzled, guava, curator))).
+    libraryDependencies ++= Seq(es, esclient, sprayCan, sprayRouting, sprayJson, akkaActor, akkaRemote, sprayTest, config, grizzled, guava, curator))).
     dependsOn(bigsaasUtil)
 
   lazy val bigsaasClient = Project(id = "bigsaas-client", base = file("bigsaas-client"), settings = defaultSettings ++ Seq(

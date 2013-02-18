@@ -21,5 +21,5 @@ trait BigSaasClient {
   /**
    * Gets an elastic search client for given tenant.
    */
-    def elasticSearchClient(tenant : Tenant) : ESClient 
+  def elasticSearchClient(tenant : Tenant) : ESClient 
 }

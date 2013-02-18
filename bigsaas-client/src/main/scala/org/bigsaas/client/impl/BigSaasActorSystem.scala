@@ -22,6 +22,7 @@ class BigSaasActorSystem(actorPort : Int) {
     }
  }
 }""")
+println(config)
   val system = ActorSystem("BigSaasSystem", config)
 
 }

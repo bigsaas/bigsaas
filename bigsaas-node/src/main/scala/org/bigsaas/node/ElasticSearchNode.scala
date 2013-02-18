@@ -8,7 +8,8 @@ import org.elasticsearch.common.settings.ImmutableSettings
 import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.node.NodeBuilder
 import grizzled.slf4j.Logging
-import org.bigsaas.util.elasticsearch.ESClient
+import org.scalastuff.esclient.`package`.ESClient
+import org.elasticsearch.action.admin.cluster.node.info.NodesInfoRequest
 
 class ElasticSearchNode extends Logging {
 
@@ -25,7 +26,7 @@ class ElasticSearchNode extends Logging {
   private val client = node.client
 
   val esClient = new ESClient(node.client)
-  val nodes : NodesInfoResponse = Await.result(esClient.clusterNodesInfo(), Duration.Inf)
+  val nodes : NodesInfoResponse = Await.result(esClient.execute(new NodesInfoRequest), Duration.Inf)
   println("Nodes: " + nodes.nodes.toSeq.map(_.getNode().address()))
   // on shutdown
 
