@@ -1,24 +1,22 @@
 package org.bigsaas.node
 
-import java.net.InetAddress
-import org.bigsaas.client.impl.BigSaasClientImpl
-import org.bigsaas.core.BigSaasConfig
-import org.bigsaas.core.BigSaasConfig.toConfig
-import org.bigsaas.util.ConfigUtils
-import org.bigsaas.util.Logging
-import com.typesafe.config.ConfigFactory
 import org.bigsaas.core.NodeAlreadyRunningException
+import org.bigsaas.util.Config
+import org.bigsaas.util.Logging
+
+import com.typesafe.config.ConfigException
 
 object Main extends App with Logging {
 
-  info("Configuration: \n  " + ConfigUtils.toSeq(BigSaasConfig).filter(_.startsWith("bigsaas")).mkString("\n  ") + "\n")
-  debug("Full Configuration: \n  " + ConfigUtils.mkString(BigSaasConfig, "\n  ") + "\n")
-
   try {
+    info("Configuration: \n  " + Config.toSeq.filter(_.startsWith("bigsaas")).mkString("\n  ") + "\n")
+    debug("Full Configuration: \n  " + Config.mkString("\n  ") + "\n")
+
     BigSaasNode.start
   }
   catch {
     case e : NodeAlreadyRunningException => error(e.getMessage)
+    case e : ConfigException => error(e.getMessage)
   }
   
 }

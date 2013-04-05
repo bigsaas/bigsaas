@@ -1,10 +1,15 @@
 package org.bigsaas.core
 
-import scala.concurrent.duration.Deadline
+import java.util.UUID
+import org.bigsaas.util.model.Id
+import akka.actor.ActorRef
+import org.joda.time.DateTime
 
-case class Node(name : String, active : Boolean, elasticSearch : ElasticSearchNode)
+case class Register(nodes : List[RegisteredNode], applications : List[RegisteredApplication], tenants : List[RegisteredTenant], lastUpdated : DateTime)
 
-case class ElasticSearchNode(isDataNode : Boolean)
+case class RegisteredNode(name : String, active : Boolean, elasticSearch : RegisteredESNode)
+
+case class RegisteredESNode(isDataNode : Boolean)
 
 
 object TenantIsolation extends Enumeration {
@@ -13,14 +18,22 @@ object TenantIsolation extends Enumeration {
   val isolated = Value("isolated")
 }
 
-case class Tenant(name : String) extends AnyVal
+case class Tenant(id : Id[Tenant], name : String)
 
-case class TenantConfiguration(name : String, isolation : TenantIsolation.Value)
+case class RegisteredTenant(name : String, isolation : TenantIsolation.Value)
 
-case class Application(name : String, version : Integer, platformVersion : (Integer, Integer), isActive : Boolean)
+case class UrlDomain(domain : String, pathPrefix : Option[String])
 
-case class RuntimeInfo(nodes : Seq[NodeInfo])
+case class RegisteredApplication(name : String, version : Int, platformVersion : VersionConstraint, isActive : Boolean)
 
-case class NodeInfo(name : String, ip : String, port : Int, applications : Seq[ApplicationNodeInfo], lastSignOfLife : Deadline)
+case class VersionConstraint(from : Int, to : Int)
 
-case class ApplicationNodeInfo(name : String, version : String, clientPort : Int, lastSignOfLife : Deadline)
+case class ActiveNode(id : Id[ActiveNode], name : String, actorRef : ActorRef, startedApplications : Map[String, Id[ActiveApplication]], lastSignOfLife : DateTime)
+
+object ActiveApplicationStatus extends Enumeration {
+  val GREEN = Value("green")
+  val YELLOW = Value("yellow")
+  val RED = Value("red")
+} 
+
+case class ActiveApplication(id : Id[ActiveApplication], name : String, version : String, actorRef : ActorRef, lastSignOfLife : DateTime, status : ActiveApplicationStatus.Value, message : Option[String] = None)

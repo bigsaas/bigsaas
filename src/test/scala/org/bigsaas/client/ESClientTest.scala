@@ -1,9 +1,8 @@
 package org.bigsaas.client
 
-import org.bigsaas.client.impl.BigSaasClientImpl
+import org.bigsaas.client.impl.BigSaasApp
 
-object ESClientTest extends App {
+object ESClientTest extends BigSaasApp {
 
-  val client = new BigSaasClientImpl
   println("Client started")
 }

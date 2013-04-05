@@ -1,10 +1,8 @@
 package org.bigsaas.client.admin
-
-import scala.concurrent.Future
-import org.bigsaas.core.RuntimeInfo
+import org.bigsaas.core.ActiveNode
 
 trait BigSaasAdminClient {
 
-  def runtimeInfo : Future[RuntimeInfo]
+  def activeNodes : Set[ActiveNode]
   
 }

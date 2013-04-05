@@ -2,14 +2,17 @@ package org.bigsaas.util
 
 import java.io.IOException
 import java.net.Socket
+import java.net.InetAddress
 
 object SocketUtils {
   
-  def findPort(startPort : Int, count : Int) : Option[Int] = {
-    val ports = startPort until startPort + count
+  def ip = InetAddress.getLocalHost.getHostAddress
+  
+  def findPort(portRange : (Int, Int)) : Option[Int] = {
+    val ports = portRange._1 until portRange._2
     ports.find(portAvailable _)
   }
-  
+
   /**
    * Checks to see if a specific port is available.
    *
@@ -17,7 +20,7 @@ object SocketUtils {
    */
   def portAvailable(port : Int) : Boolean = {
     try {
-      val socket = new Socket("localhost", port)
+      val socket = new Socket(InetAddress.getLocalHost.getHostAddress, port)
       try {
         socket.close
       } catch {

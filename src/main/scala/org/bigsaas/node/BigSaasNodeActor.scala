@@ -1,24 +1,17 @@
 package org.bigsaas.node
 
-import org.bigsaas.client.impl.BigSaasClientImpl
-import akka.actor.Actor
+import scala.collection.mutable
+
+import org.bigsaas.core.ActiveApplication
+import org.bigsaas.core.ActiveNode
+import org.bigsaas.core.GetBigSaasNodeInfo
+import org.bigsaas.core.Register
 import org.bigsaas.util.Logging
-import org.bigsaas.core.RuntimeInfoRequest
-import org.bigsaas.core.RuntimeInfo
-import org.bigsaas.core.NodeInfo
-import org.bigsaas.core.BigSaasConfig
-import scala.concurrent.duration.Deadline
-import org.bigsaas.core.ApplicationSignOfLife
-import collection.mutable
-import org.bigsaas.core.ApplicationNodeInfo
+import org.bigsaas.util.model.Id
+import org.bigsaas.util.DateTimeUtils.epoch
+import org.joda.time.DateTime
 import scala.concurrent.duration._
-import org.elasticsearch.action.admin.cluster.node.stats.NodesStatsRequest
-import scala.util.Left
-import scala.util.Success
-import scala.util.Failure
-import org.elasticsearch.action.admin.cluster.node.info.NodesInfoRequest
-import org.elasticsearch.common.transport.InetSocketTransportAddress
-import org.bigsaas.core.NodeSignOfLife
+import akka.actor.Actor
 
 
 /**
@@ -30,36 +23,68 @@ class BigSaasNodeActor extends Actor with Logging {
   
   info("BigSaas Node started")
   
-  val elasticSearchNode = new ElasticSearchNode
-  val esClient = elasticSearchNode.esClient
-  
-  val nodeInfo = mutable.Map[(String, String, Int), NodeInfo]()
-  val applicationNodeInfo = mutable.Map[(String, String, Int), ApplicationNodeInfo]()
-  def runtimeInfo = RuntimeInfo(nodeInfo.values.toList ++ nodeInfo.values.toList)
+  val nodeId = Id.generate[ActiveNode]
 
-  // Periodically ask ES for nodes and send last sign of life messages to them
-  context.system.scheduler.schedule(0 seconds, BigSaasConfig.lastSignOfLifeSec seconds) {
-    esClient.execute(new NodesInfoRequest).onComplete {
-      case Success(response) =>
-        response.getNodes.foreach { node =>
-          val host = node.node.address match {
-            case inet : InetSocketTransportAddress => inet.address.getHostString
-            case _ => ""
-          }
-          val nodeActor = context.actorFor(s"akka://bigsaas@$host:${BigSaasConfig.nodePort}/user/nodeActor")
-          nodeActor ! NodeSignOfLife(BigSaasConfig.nodeName, BigSaasConfig.ip, BigSaasConfig.nodePort, applicationNodeInfo.values.toList)
-        }
-      case Failure(e) => error("Lost connection with ElasticSearch: " + e)
+  var currentRegister : Register = Register(Nil, Nil, Nil, new DateTime(0))
+  val activeNodes = mutable.Map[Id[ActiveNode], ActiveNode]()
+  val activeApplications = mutable.Map[Id[ActiveApplication], ActiveApplication]()
+  
+  def activeNode = ActiveNode(nodeId, NodeConfig.name, self, Map(), DateTime.now)
+
+  override def preStart {
+    // Read register from file
+    RegisterFile.read.foreach(self ! _)
+
+    // Periodically send a sign of life to the other nodes.
+    context.system.scheduler.schedule(0 seconds, NodeConfig.lastSignOfLifeSec seconds) {
+      self ! activeNode
     }
   }
   
   def receive = {
-    case "info" => info("Received INFO command")
-    case RuntimeInfoRequest => sender ! runtimeInfo
-    case NodeSignOfLife(name, ip, port, applications) =>
-      nodeInfo += (name, ip, port) -> NodeInfo(name, ip, port, applications, Deadline.now)
-    case ApplicationSignOfLife(name, version, clientPort, message) =>
-      applicationNodeInfo += (name, version, clientPort) -> ApplicationNodeInfo(name, version, clientPort, Deadline.now)
+    case register : Register =>
+      // do we need to update the register?
+      val registerChanged = 
+        if (register.lastUpdated.isAfter(currentRegister.lastUpdated)) true
+        else if (register.lastUpdated.isEqual(currentRegister.lastUpdated) && register != currentRegister) true
+        else false
+      if (registerChanged) {
+        info("Register changed: " + register)
+        currentRegister = register
+        RegisterFile.write(register)
+        activeNodes.values.foreach { node =>
+          node.actorRef ! register
+        }
+      }
+    case node : ActiveNode =>
+      val oldNode = activeNodes.put(node.id, node)
+      if (oldNode != Some(node)) {
+        if (oldNode.map(_.copy(lastSignOfLife=epoch)) != Some(node.copy(lastSignOfLife=epoch)))
+          info("Active node changed: " + node)
+        activeNodes.values.foreach { node =>
+          node.actorRef ! node
+          activeApplications.values.foreach { app =>
+            node.actorRef ! app}
+        }
+      }
+    case app : ActiveApplication =>
+      val oldApp = activeApplications.put(app.id, app) 
+      if (oldApp != Some(app)) {
+        if (oldApp.map(_.copy(lastSignOfLife=epoch)) != Some(app.copy(lastSignOfLife=epoch)))
+          info("Active application changed: " + app)
+        activeNodes.values.foreach { node =>
+          node.actorRef ! app
+        }
+      }
+    case GetBigSaasNodeInfo => 
+      sender ! (activeNodes.values.toList, activeApplications.values.toList)
+      
+      
+//    case RuntimeInfoRequest => sender ! runtimeInfo
+//    case NodeSignOfLife(name, ip, port, applications) =>
+//      nodeInfo += (name, ip, port) -> ActiveNode(NodeId(name, port), ip, applications, Deadline.now)
+//    case ApplicationSignOfLife(name, version, clientPort, message) =>
+//      applicationNodeInfo += (name, version, clientPort) -> ActiveApplication(name, version, clientPort, NodeId(name, port), Deadline.now)
     case s => info("Received Other command" + s)
   }
 }

@@ -1,13 +1,13 @@
 package org.bigsaas.util
 
-import com.typesafe.config.ConfigFactory
-import ch.qos.logback.classic.Logger
 import org.slf4j.LoggerFactory
+
+import com.typesafe.config.ConfigFactory
+
 import ch.qos.logback.classic.Level
-import ch.qos.logback.core.LayoutBase
+import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.spi.ILoggingEvent
-import com.typesafe.config.Config
-import org.bigsaas.core.InvalidConfigrationException
+import ch.qos.logback.core.LayoutBase
 
 trait Logging extends grizzled.slf4j.Logging {
   
@@ -15,22 +15,14 @@ trait Logging extends grizzled.slf4j.Logging {
   // a logger, like ProfilingUtils. Also strip the trailing $ from the logger
   // name.
   override implicit lazy val logger = {
-    Logging.init
     grizzled.slf4j.Logger(getClass.getName.stripSuffix("$"))
   }
 }
 
 object Logging {
-
-  val config = ConfigFactory.load
-  
-  lazy val init = {
-    setLevel("bigsaas.loglevel", "org.bigsaas")
-  }
-  
-  private def setLevel(key : String, logger : String) {
+  def setLevel(key : String, logger : String) {
     LoggerFactory.getLogger(logger).asInstanceOf[Logger].setLevel {
-      config.getString(key).toLowerCase match {
+      Config.anyOf(key, "off" :: "error" :: "warn" :: "info" :: "debug" :: "trace" :: "all" :: Nil) match {
         case "off" => Level.OFF
         case "error" => Level.ERROR
         case "warn" => Level.WARN
@@ -38,12 +30,9 @@ object Logging {
         case "debug" => Level.DEBUG
         case "trace" => Level.TRACE
         case "all" => Level.ALL
-        case value => throw new InvalidConfigrationException(key, value)
       }
     }
   }
-  
-
 }
 
 // Not being used, leave in as an example
